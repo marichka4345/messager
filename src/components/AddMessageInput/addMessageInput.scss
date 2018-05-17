@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+
+.addMessage {
+
+}
+
+.textArea {
+  height: 3em;
+  max-height: 10em;
+  overflow-y: scroll;
+  border-bottom: 2px solid $borderBlueColor;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:empty:before {
+    content: 'Enter your message here :)';
+    font-size: .8em;
+    color: $textLightGrayColor;
+    pointer-events: none;
+  }
+}

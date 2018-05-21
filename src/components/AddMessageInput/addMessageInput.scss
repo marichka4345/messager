@@ -1,14 +1,25 @@
 @import '../../styles/variables.scss';
 
-.addMessage {
+.message {
+  position: relative;
+  width: 500px;
+  margin-bottom: 20px;
 
+  &:after {
+    position: absolute;
+    bottom: -10px;
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    margin-top: 8px;
+    background: $borderBlueColor;
+  }
 }
 
 .textArea {
-  height: 3em;
-  max-height: 10em;
-  overflow-y: scroll;
-  border-bottom: 2px solid $borderBlueColor;
+  height: 50px;
+  max-height: 150px;
 
   &:focus {
     outline: none;
@@ -20,4 +31,13 @@
     color: $textLightGrayColor;
     pointer-events: none;
   }
+}
+
+.sendButton {
+  padding: 10px 15px;
+  background: transparent;
+  border: 1px solid $borderBlueColor;
+  color: $borderBlueColor;
+  text-transform: uppercase;
+  cursor: pointer;
 }

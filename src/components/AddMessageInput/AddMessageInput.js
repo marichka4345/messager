@@ -23,8 +23,27 @@ export default class AddMessageInput extends Component {
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
+  sendMessage = () => {
+    const { sendMessage } = this.props;
+    const message = {
+      time: new Date().toLocaleDateString(),
+      author: 'Mariia',
+      text: this.removeRedundantSymbols(this.state.messageText)
+    };
+    sendMessage(message);
+
+    this.setState({ messageText: '' });
+    const textarea = document.getElementById('textarea');
+    textarea.style.height = 50 + 'px';
+  };
+
+  removeRedundantSymbols(text) {
+    return text.replace(/<div>/g, '').replace(/<\/div>/g, '\n');
+  }
+
   render() {
     const { messageText } = this.state;
+    const { sendMessage } = this.props;
 
     return (
       <div className={styles.addMessage}>
@@ -40,7 +59,9 @@ export default class AddMessageInput extends Component {
           </Scrollbars>
         </div>
 
-        <button className={styles.sendButton}>Send</button>
+        <button className={styles.sendButton} onClick={this.sendMessage}>
+          Send
+        </button>
       </div>
     );
   }

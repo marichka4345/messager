@@ -1,0 +1,47 @@
+@import '../../styles/variables.scss';
+
+.messageContainer {
+  width: 40%;
+}
+
+.myMessageContainer {
+  composes: messageContainer;
+  align-self: flex-end;
+}
+
+.otherPersonMessageContainer {
+  composes: messageContainer;
+}
+
+.message {
+  padding: 10px 30px;
+  border-radius: 20px;
+  color: white;
+  white-space: pre;
+}
+
+.myMessage {
+  composes: message;
+  background: $myMessageColor;
+}
+
+.otherPersonMessage {
+  composes: message;
+  background: $otherPersonMessageColor;
+}
+
+.additionalInfo {
+  padding: 0 30px;
+  font-size: .8em;
+  color: $textLightGrayColor;
+}
+
+.author {
+  composes: additionalInfo;
+  margin-top: 0;
+}
+
+.time {
+  composes: additionalInfo;
+  margin-top: 5px;
+}

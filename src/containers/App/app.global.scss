@@ -1,0 +1,9 @@
+@import '../../styles/variables.scss';
+
+body {
+  background: rgba(0, 173, 194, .3);
+  background: $borderBlueColor;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}

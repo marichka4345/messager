@@ -10,7 +10,7 @@ export default class MessageList extends Component {
 
     return (
       <div className={styles.list}>
-        {messages.map(message => <Message {...message} />)}
+        {messages.map(message => <Message key={message.id} {...message} />)}
       </div>
     );
   }

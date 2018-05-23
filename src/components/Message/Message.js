@@ -1,21 +1,23 @@
 import React from 'react';
 
+import { formatDateTime } from '../../utils/dateTime';
+
 import styles from './message.scss';
 
-export default ({ author, text, time }) => (
-  <div
+export default ({ from, content, createdAt }) => (
+  <section
     className={
-      author === 'Mariia'
+      from === 'Mariia'
         ? styles.myMessageContainer
         : styles.otherPersonMessageContainer
     }>
-    <p className={styles.author}>{author}</p>
-    <div
+    <p className={styles.author}>{from}</p>
+    <main
       className={
-        author === 'Mariia' ? styles.myMessage : styles.otherPersonMessage
+        from === 'Mariia' ? styles.myMessage : styles.otherPersonMessage
       }>
-      <p>{text}</p>
-    </div>
-    <p className={styles.time}>{time}</p>
-  </div>
+      {content}
+    </main>
+    <p className={styles.time}>{formatDateTime(createdAt)}</p>
+  </section>
 );

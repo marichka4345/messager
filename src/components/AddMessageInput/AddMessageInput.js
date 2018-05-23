@@ -18,32 +18,30 @@ export default class AddMessageInput extends Component {
     });
   };
 
+  sendMessage = async () => {
+    const { sendMessage } = this.props;
+    const message = {
+      from: 'Mariia',
+      content: this.removeRedundantSymbols(this.state.messageText)
+    };
+    await sendMessage({ variables: message });
+
+    this.setState({ messageText: '' });
+    const textarea = document.getElementById('textarea');
+    textarea.style.height = styles.textArea.height;
+  };
+
   changeTextAreaHeight() {
     const textarea = document.getElementById('textarea');
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
-  sendMessage = () => {
-    const { sendMessage } = this.props;
-    const message = {
-      time: new Date().toLocaleDateString(),
-      author: 'Mariia',
-      text: this.removeRedundantSymbols(this.state.messageText)
-    };
-    sendMessage(message);
-
-    this.setState({ messageText: '' });
-    const textarea = document.getElementById('textarea');
-    textarea.style.height = 50 + 'px';
-  };
-
   removeRedundantSymbols(text) {
-    return text.replace(/<div>/g, '').replace(/<\/div>/g, '\n');
+    return text.replace(/<div>/g, ' ').replace(/<\/div>/g, '\n');
   }
 
   render() {
     const { messageText } = this.state;
-    const { sendMessage } = this.props;
 
     return (
       <div className={styles.addMessage}>

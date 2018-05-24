@@ -1,0 +1,19 @@
+.messages-enter {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.messages-enter.messages-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all .5s ease;
+}
+
+.messages-appear {
+  opacity: 0;
+}
+
+.messages-appear.messages-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease;
+}

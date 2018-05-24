@@ -6,12 +6,13 @@ import {
   CREATE_CHAT_MUTATION,
   ALL_CHATS_QUERY,
   ALL_CHATS_SUBSCRIPTION,
-  UPDATE_CHAT_MUTATION
+  UPDATE_CHAT_MUTATION,
+  UPDATE_CHAT_SUBSCRIPTION
 } from '../../queries/chat-queries';
 
-import MessageList from '../MessageList/MessageList';
-import AddMessageInput from '../../components/AddMessageInput/AddMessageInput';
 import Modal from '../../components/Modal/Modal';
+import MessageList from '../../components/MessageList/MessageList';
+import AddMessageInput from '../AddMessageInput/AddMessageInput';
 
 import styles from './app.scss';
 import './app.global.scss';
@@ -27,6 +28,7 @@ class App extends Component {
   componentDidMount() {
     this.loadChats();
     this.subscribeToChats(this.props.allChatsQuery, ALL_CHATS_SUBSCRIPTION);
+    this.subscribeToChats(this.props.allChatsQuery, UPDATE_CHAT_SUBSCRIPTION);
   }
 
   loadChats = chats => {
@@ -38,19 +40,20 @@ class App extends Component {
     }
 
     const { client } = this.props;
-    client.query({ query: ALL_CHATS_QUERY }).then(response => {
+    client.query({ query: ALL_CHATS_QUERY }).then(response =>
       this.setState({
         messages: response.data.allChats || []
-      });
-    });
+      })
+    );
   };
 
   updateChat = async message => {
     const { updateChatMutation } = this.props;
 
-    const response = await updateChatMutation({ variables: message });
-
-    this.loadChats();
+    const response = await updateChatMutation({
+      variables: message,
+      refetchQueries: [{ query: ALL_CHATS_QUERY }]
+    });
     return response.data.updateChat.content;
   };
 

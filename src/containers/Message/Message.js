@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ContentEditable from 'react-contenteditable';
+import cx from 'classnames';
 
 import MessageActionButton from '../../components/MessageActionButton/MessageActionButton';
 
@@ -83,6 +84,15 @@ export default class Message extends Component {
       message
     } = this.state;
 
+    const actionButton = isActionButtonVisible || isEditMode ? (
+      <MessageActionButton
+        isEditMode={isEditMode}
+        turnOnEditMode={this.turnOnEditMode}
+        save={this.saveMessage}
+        cancel={this.cancelChanges}
+      />
+    ) : null;
+
     return (
       <section
         className={
@@ -92,11 +102,12 @@ export default class Message extends Component {
         }>
         <p className={styles.author}>{from}</p>
         <div
-          className={`${
-            from === name ? styles.myMessage : styles.otherPersonMessage
-          }
-          ${isMessageEmpty ? styles.hasError : ''}
-          ${isEditMode ? styles.editableMessage : ''}`}
+          className={cx(
+          from === name ? styles.myMessage : styles.otherPersonMessage,
+          {
+            [styles.hasError]: isMessageEmpty,
+            [styles.editableMessage]: isEditMode
+          })}
           onMouseEnter={this.toggleActionIconVisibility}
           onMouseLeave={this.toggleActionIconVisibility}
           onAnimationEnd={() => this.setState({ isMessageEmpty: false })}>
@@ -107,14 +118,7 @@ export default class Message extends Component {
             suppressContentEditableWarning={true}
             spellCheck="false"
           />
-          {isActionButtonVisible || isEditMode ? (
-            <MessageActionButton
-              isEditMode={isEditMode}
-              turnOnEditMode={this.turnOnEditMode}
-              save={this.saveMessage}
-              cancel={this.cancelChanges}
-            />
-          ) : null}
+          {actionButton}
         </div>
         <p className={styles.time}>{formatDateTime(createdAt)}</p>
       </section>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import Message from '../../components/Message/Message';
+import Message from '../../containers/Message/Message';
 
 import './messageList.global.scss';
 import styles from './messageList.scss';

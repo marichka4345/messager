@@ -19,9 +19,9 @@ export default class AddMessageInput extends Component {
   };
 
   sendMessage = async () => {
-    const { sendMessage } = this.props;
+    const { sendMessage, name } = this.props;
     const message = {
-      from: 'Mariia',
+      from: name,
       content: this.removeRedundantSymbols(this.state.messageText)
     };
     await sendMessage({ variables: message });

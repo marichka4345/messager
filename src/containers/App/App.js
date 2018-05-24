@@ -11,13 +11,17 @@ import {
 
 import MessageList from '../MessageList/MessageList';
 import AddMessageInput from '../../components/AddMessageInput/AddMessageInput';
+import Modal from '../../components/Modal/Modal';
 
 import styles from './app.scss';
 import './app.global.scss';
 
 class App extends Component {
   state = {
-    messages: []
+    messages: [],
+    showModal: true,
+    nameValue: '',
+    name: ''
   };
 
   componentDidMount() {
@@ -72,25 +76,62 @@ class App extends Component {
     });
   }
 
+  setName = ({ target }) =>
+    this.setState({
+      nameValue: target.value
+    });
+
+  saveName = () => {
+    const { nameValue } = this.state;
+
+    if (!nameValue) {
+      return;
+    }
+    this.setState({
+      name: nameValue,
+      showModal: false
+    });
+  };
+
   render() {
     const { allChatsQuery, createChatMutation } = this.props;
-    const { messages } = this.state;
+    const { messages, nameValue, name, showModal } = this.state;
 
-    return (
-      <Fragment>
-        {allChatsQuery.loading ? (
-          <div className={styles.loader}>
-            <ReactLoading type="bars" width={150} height={100} />
+    const modal = (
+      <Modal>
+        <div className={styles.modalWrapper}>
+          <div className={styles.modal}>
+            <h2>Enter your name</h2>
+            <input
+              className={styles.nameInput}
+              value={nameValue}
+              onChange={this.setName}
+            />
+            <button className={styles.saveButton} onClick={this.saveName}>
+              OK
+            </button>
           </div>
-        ) : (
-          <div className={styles.messagesContainer}>
-            <h1>Super Chat</h1>
-            <MessageList messages={messages} updateChat={this.updateChat} />
-            <AddMessageInput sendMessage={createChatMutation} />
-          </div>
-        )}
-      </Fragment>
+        </div>
+      </Modal>
     );
+
+    const chat = allChatsQuery.loading ? (
+      <div className={styles.loader}>
+        <ReactLoading type="bars" width={150} height={100} />
+      </div>
+    ) : (
+      <div className={styles.messagesContainer}>
+        <h1>Super Chat</h1>
+        <MessageList
+          messages={messages}
+          updateChat={this.updateChat}
+          name={name}
+        />
+        <AddMessageInput sendMessage={createChatMutation} name={name} />
+      </div>
+    );
+
+    return <Fragment>{showModal ? modal : chat}</Fragment>;
   }
 }
 

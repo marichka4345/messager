@@ -8,25 +8,29 @@ import styles from './messageList.scss';
 
 export default class MessageList extends Component {
   render() {
-    const { messages, updateChat } = this.props;
+    const { messages, updateChat, name } = this.props;
 
     return (
-      <div className={styles.list}>
-        <CSSTransitionGroup
-          transitionName="messages"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-          transitionAppear={true}
-          transitionAppearTimeout={500}>
-          {messages.length > 0 ? (
-            messages.map(message => (
-              <Message key={message.id} updateChat={updateChat} {...message} />
-            ))
-          ) : (
-            <p>Please start conversation</p>
-          )}
-        </CSSTransitionGroup>
-      </div>
+      <CSSTransitionGroup
+        className={styles.list}
+        transitionName="messages"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={300}
+        transitionAppear={true}
+        transitionAppearTimeout={500}>
+        {messages.length > 0 ? (
+          messages.map(message => (
+            <Message
+              key={message.id}
+              updateChat={updateChat}
+              name={name}
+              {...message}
+            />
+          ))
+        ) : (
+          <p>Please start conversation</p>
+        )}
+      </CSSTransitionGroup>
     );
   }
 }

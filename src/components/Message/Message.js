@@ -22,7 +22,8 @@ export default class Message extends Component {
   }
 
   toggleActionIconVisibility = () => {
-    if (this.props.from === 'Mariia' && !this.state.isEditMode) {
+    const { name, from } = this.props;
+    if (from === name && !this.state.isEditMode) {
       this.setState(prevState => ({
         isActionButtonVisible: !prevState.isActionButtonVisible
       }));
@@ -74,7 +75,7 @@ export default class Message extends Component {
   };
 
   render() {
-    const { from, createdAt } = this.props;
+    const { from, createdAt, name } = this.props;
     const {
       isActionButtonVisible,
       isEditMode,
@@ -85,14 +86,14 @@ export default class Message extends Component {
     return (
       <section
         className={
-          from === 'Mariia'
+          from === name
             ? styles.myMessageContainer
             : styles.otherPersonMessageContainer
         }>
         <p className={styles.author}>{from}</p>
         <div
           className={`${
-            from === 'Mariia' ? styles.myMessage : styles.otherPersonMessage
+            from === name ? styles.myMessage : styles.otherPersonMessage
           }
           ${isMessageEmpty ? styles.hasError : ''}
           ${isEditMode ? styles.editableMessage : ''}`}

@@ -28,7 +28,7 @@ export default class AddMessageInput extends Component {
 
     this.setState({ messageText: '' });
     const textarea = document.getElementById('textarea');
-    textarea.style.height = styles.textArea.height;
+    textarea.style.height = '50px';
   };
 
   changeTextAreaHeight() {

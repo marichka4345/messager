@@ -4,6 +4,28 @@
   width: 40%;
 }
 
+.hasError {
+  animation: shake .8s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
 .myMessageContainer {
   composes: messageContainer;
   align-self: flex-end;
@@ -15,7 +37,7 @@
 
 .message {
   position: relative;
-  padding: 10px 40px 10px 30px;
+  padding: 10px 30px;
   border-radius: 20px;
   color: white;
   white-space: pre;
@@ -32,11 +54,7 @@
 }
 
 .editableMessage {
-  background: rgba(225, 225, 225, .6);
-
-  &:focus {
-    outline: none;
-  }
+  background: rgba(225, 225, 225, .4);
 }
 
 .additionalInfo {

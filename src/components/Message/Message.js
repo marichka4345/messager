@@ -11,6 +11,7 @@ export default class Message extends Component {
   state = {
     isActionButtonVisible: false,
     isEditMode: false,
+    isMessageEmpty: false,
     message: ''
   };
 
@@ -21,7 +22,7 @@ export default class Message extends Component {
   }
 
   toggleActionIconVisibility = () => {
-    if (this.props.from === 'Mariia') {
+    if (this.props.from === 'Mariia' && !this.state.isEditMode) {
       this.setState(prevState => ({
         isActionButtonVisible: !prevState.isActionButtonVisible
       }));
@@ -34,25 +35,32 @@ export default class Message extends Component {
     });
   };
 
-  changeMessage = ({target}) => {
+  changeMessage = ({ target }) => {
     this.setState({
       message: target.value
     });
   };
 
   saveMessage = () => {
-    const { updateChat, id } = this.props;
-    const {message: content} = this.state;
+    const { message: content } = this.state;
 
+    if (!content) {
+      this.setState({
+        isMessageEmpty: true
+      });
+      return;
+    }
+
+    const { updateChat, id } = this.props;
     const message = {
       id,
       content
     };
-    updateChat(message).then(message =>  {
+    updateChat(message).then(message => {
       this.setState({
         message,
         isEditMode: false
-      })
+      });
     });
   };
 
@@ -60,45 +68,52 @@ export default class Message extends Component {
     const { content: message } = this.props;
     this.setState({
       message,
-      isEditMode: false
+      isEditMode: false,
+      isActionButtonVisible: false
     });
   };
 
   render() {
     const { from, createdAt } = this.props;
-    const { isActionButtonVisible, isEditMode, message } = this.state;
+    const {
+      isActionButtonVisible,
+      isEditMode,
+      isMessageEmpty,
+      message
+    } = this.state;
 
     return (
       <section
-          className={
-            from === 'Mariia'
-                ? styles.myMessageContainer
-                : styles.otherPersonMessageContainer
-          }
-      >
+        className={
+          from === 'Mariia'
+            ? styles.myMessageContainer
+            : styles.otherPersonMessageContainer
+        }>
         <p className={styles.author}>{from}</p>
-        <div className={ from === 'Mariia' ? styles.myMessage : styles.otherPersonMessage }
-             onMouseEnter={this.toggleActionIconVisibility}
-             onMouseLeave={this.toggleActionIconVisibility}
-        >
-          <ContentEditable
-              className={isEditMode ? styles.editableMessage : ''}
-              html={message}
-              disabled={!isEditMode}
-              onChange={this.changeMessage}
-              suppressContentEditableWarning={true}
-              spellCheck="false"
-          />
-          {
-            isActionButtonVisible || isEditMode
-                ? <MessageActionButton
-                    isEditMode={isEditMode}
-                    turnOnEditMode={this.turnOnEditMode}
-                    save={this.saveMessage}
-                    cancel={this.cancelChanges}
-                />
-                : null
+        <div
+          className={`${
+            from === 'Mariia' ? styles.myMessage : styles.otherPersonMessage
           }
+          ${isMessageEmpty ? styles.hasError : ''}
+          ${isEditMode ? styles.editableMessage : ''}`}
+          onMouseEnter={this.toggleActionIconVisibility}
+          onMouseLeave={this.toggleActionIconVisibility}
+          onAnimationEnd={() => this.setState({ isMessageEmpty: false })}>
+          <ContentEditable
+            html={message}
+            disabled={!isEditMode}
+            onChange={this.changeMessage}
+            suppressContentEditableWarning={true}
+            spellCheck="false"
+          />
+          {isActionButtonVisible || isEditMode ? (
+            <MessageActionButton
+              isEditMode={isEditMode}
+              turnOnEditMode={this.turnOnEditMode}
+              save={this.saveMessage}
+              cancel={this.cancelChanges}
+            />
+          ) : null}
         </div>
         <p className={styles.time}>{formatDateTime(createdAt)}</p>
       </section>

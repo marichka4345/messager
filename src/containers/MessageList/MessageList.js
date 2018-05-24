@@ -13,16 +13,18 @@ export default class MessageList extends Component {
     return (
       <div className={styles.list}>
         <CSSTransitionGroup
-            transitionName="messages"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
-            transitionAppear={true}
-            transitionAppearTimeout={500}
-        >
-        {messages.map(message => <Message
-            key={message.id}
-            updateChat={updateChat}
-            {...message} />)}
+          transitionName="messages"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+          transitionAppear={true}
+          transitionAppearTimeout={500}>
+          {messages.length > 0 ? (
+            messages.map(message => (
+              <Message key={message.id} updateChat={updateChat} {...message} />
+            ))
+          ) : (
+            <p>Please start conversation</p>
+          )}
         </CSSTransitionGroup>
       </div>
     );

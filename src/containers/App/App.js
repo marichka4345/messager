@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import ReactLoading from 'react-loading';
 
 import { graphql, compose, withApollo } from 'react-apollo';
 import {
@@ -34,15 +35,13 @@ class App extends Component {
 
     const { client } = this.props;
     client.query({ query: ALL_CHATS_QUERY }).then(response => {
-        this.setState({
-          messages: response.data.allChats || []
-        })
-      }
-    );
-
+      this.setState({
+        messages: response.data.allChats || []
+      });
+    });
   };
 
-  updateChat = async (message) => {
+  updateChat = async message => {
     const { updateChatMutation } = this.props;
 
     const response = await updateChatMutation({ variables: message });
@@ -63,7 +62,7 @@ class App extends Component {
     };
     this.loadChats(newChatLinks);
     return result;
-  }
+  };
 
   subscribeToChats(query, document) {
     const { updateQuery } = this;
@@ -74,22 +73,30 @@ class App extends Component {
   }
 
   render() {
-    const { createChatMutation } = this.props;
+    const { allChatsQuery, createChatMutation } = this.props;
     const { messages } = this.state;
 
     return (
-      <div className={styles.messagesContainer}>
-        <MessageList messages={messages} updateChat={this.updateChat} />
-        <AddMessageInput sendMessage={createChatMutation} />
-      </div>
+      <Fragment>
+        {allChatsQuery.loading ? (
+          <div className={styles.loader}>
+            <ReactLoading type="bars" width={150} height={100} />
+          </div>
+        ) : (
+          <div className={styles.messagesContainer}>
+            <h1>Super Chat</h1>
+            <MessageList messages={messages} updateChat={this.updateChat} />
+            <AddMessageInput sendMessage={createChatMutation} />
+          </div>
+        )}
+      </Fragment>
     );
   }
 }
 
-export default withApollo(
-  compose(
-    graphql(ALL_CHATS_QUERY, { name: 'allChatsQuery' }),
-    graphql(CREATE_CHAT_MUTATION, { name: 'createChatMutation' }),
-    graphql(UPDATE_CHAT_MUTATION, { name: 'updateChatMutation' })
-  )(App)
-);
+export default compose(
+  withApollo,
+  graphql(CREATE_CHAT_MUTATION, { name: 'createChatMutation' }),
+  graphql(UPDATE_CHAT_MUTATION, { name: 'updateChatMutation' }),
+  graphql(ALL_CHATS_QUERY, { name: 'allChatsQuery' })
+)(App);

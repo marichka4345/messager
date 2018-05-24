@@ -1,6 +1,15 @@
+@import '../../styles/variables.scss';
+
 .messagesContainer {
   display: flex;
   flex-direction: column;
   width: 85%;
   margin: auto;
+  padding: 20px 0;
+}
+
+.loader {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

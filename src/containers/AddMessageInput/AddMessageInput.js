@@ -19,10 +19,14 @@ export default class AddMessageInput extends Component {
   };
 
   sendMessage = async () => {
+    const content = this.removeRedundantSymbols(this.state.messageText);
+    if (!content.trim()) {
+      return;
+    }
     const { sendMessage, name } = this.props;
     const message = {
-      from: name,
-      content: this.removeRedundantSymbols(this.state.messageText)
+      content,
+      from: name
     };
     await sendMessage({ variables: message });
 
@@ -37,7 +41,10 @@ export default class AddMessageInput extends Component {
   }
 
   removeRedundantSymbols(text) {
-    return text.replace(/<div>/g, ' ').replace(/<\/div>/g, '\n');
+    return text
+      .replace(/&nbsp;/g, '')
+      .replace(/<div>/g, ' ')
+      .replace(/<\/div>/g, '\n');
   }
 
   render() {

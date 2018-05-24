@@ -14,6 +14,12 @@ export default class Message extends Component {
     message: ''
   };
 
+  componentDidMount() {
+    this.setState({
+      message: this.props.content
+    });
+  }
+
   toggleActionIconVisibility = () => {
     if (this.props.from === 'Mariia') {
       this.setState(prevState => ({
@@ -35,18 +41,32 @@ export default class Message extends Component {
   };
 
   saveMessage = () => {
-    //update query: update real message entity with value from state
-    console.log('save');
+    const { updateChat, id } = this.props;
+    const {message: content} = this.state;
+
+    const message = {
+      id,
+      content
+    };
+    updateChat(message).then(message =>  {
+      this.setState({
+        message,
+        isEditMode: false
+      })
+    });
   };
 
   cancelChanges = () => {
-    //state = value from props.content
-    console.log('cancel');
+    const { content: message } = this.props;
+    this.setState({
+      message,
+      isEditMode: false
+    });
   };
 
   render() {
-    const { from, content, createdAt } = this.props;
-    const { isActionButtonVisible, isEditMode } = this.state;
+    const { from, createdAt } = this.props;
+    const { isActionButtonVisible, isEditMode, message } = this.state;
 
     return (
       <section
@@ -63,7 +83,7 @@ export default class Message extends Component {
         >
           <ContentEditable
               className={isEditMode ? styles.editableMessage : ''}
-              html={content}
+              html={message}
               disabled={!isEditMode}
               onChange={this.changeMessage}
               suppressContentEditableWarning={true}

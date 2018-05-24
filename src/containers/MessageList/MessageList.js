@@ -6,11 +6,14 @@ import styles from './messageList.scss';
 
 export default class MessageList extends Component {
   render() {
-    const { messages } = this.props;
+    const { messages, updateChat } = this.props;
 
     return (
       <div className={styles.list}>
-        {messages.map(message => <Message key={message.id} {...message} />)}
+        {messages.map(message => <Message
+            key={message.id}
+            updateChat={updateChat}
+            {...message} />)}
       </div>
     );
   }

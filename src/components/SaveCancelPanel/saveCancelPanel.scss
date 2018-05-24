@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+
+.panel {
+  display: flex;
+  position: absolute;
+  right: -30px;
+}
+
+.actionButton {
+  composes: actionButton from "../MessageActionButton/messageActionButton.scss";
+  position: static !important;
+  user-select: none;
+}
+
+.saveButton {
+  composes: actionButton;
+  background: $saveButtonColor;
+}
+
+.cancelButton {
+  composes: actionButton;
+  background: $cancelButtonColor;
+}

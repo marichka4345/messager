@@ -1,9 +1,17 @@
 import React, { Fragment } from 'react';
 
+import SaveCancelPanel from '../SaveCancelPanel/SaveCancelPanel';
+
 import styles from './messageActionButton.scss';
 
-export default({ isEditIconVisible }) => (
+export default({ isEditMode, turnOnEditMode, save, cancel }) => (
     <Fragment>
-      { isEditIconVisible ? <div className={styles.edit}>&#9998;</div> : null }
+      {
+          isEditMode
+              ? <SaveCancelPanel save={save} cancel={cancel}/>
+              : <div className={styles.actionButton}>
+                  <span onClick={turnOnEditMode}>&#9998;</span>
+              </div>
+      }
     </Fragment>
 );

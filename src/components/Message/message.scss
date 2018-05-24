@@ -15,7 +15,7 @@
 
 .message {
   position: relative;
-  padding: 10px 30px;
+  padding: 10px 40px 10px 30px;
   border-radius: 20px;
   color: white;
   white-space: pre;
@@ -29,6 +29,14 @@
 .otherPersonMessage {
   composes: message;
   background: $otherPersonMessageColor;
+}
+
+.editableMessage {
+  background: rgba(225, 225, 225, .6);
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .additionalInfo {
